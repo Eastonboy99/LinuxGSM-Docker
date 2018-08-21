@@ -67,7 +67,13 @@ RUN groupadd -g 750 -o lgsm && \
 	cp /linuxgsm.sh /home/lgsm/linuxgsm.sh && \
 	usermod -G tty lgsm && \
 	chown -R lgsm:lgsm /home/lgsm/ && \
-	chmod 755 /home/lgsm
+	chmod 755 /home/lgsm && \
+	chmod g+s /home/lgsm
+
+## for gameserver containers
+RUN mkdir /gameserver
+RUN mv /linuxgsm.sh /gameserver
+RUN chown -R lgsm:lgsm /gameserver
 
 USER lgsm
 WORKDIR /home/lgsm
