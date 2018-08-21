@@ -9,13 +9,14 @@ LABEL maintainer="LinuxGSM <me@Danielgibbs.co.uk>"
 
 ENV DEBIAN_FRONTEND noninteractive
 
-WORKDIR /gameserver
-
-RUN bash /gameserver/linuxgsm.sh gmodserver
-
-RUN bash ./gmodserver auto-install
-
+USER lgsm
 WORKDIR /home/lgsm
+
+# RUN mv /gameserver/linuxgsm.sh /home/lgsm
+
+RUN bash ./linuxgsm.sh gmodserver install
+
+RUN pwd && ls / && bash ./gmodserver auto-install
 
 EXPOSE 27015/udp
 

@@ -61,7 +61,7 @@ RUN wget https://linuxgsm.com/dl/linuxgsm.sh
 
 ## user config
 RUN groupadd -g 750 -o lgsm && \
-	adduser --uid 750 --disabled-password --gecos "" --ingroup lgsm lgsm && \
+	adduser --uid 750 --disabled-password --gecos "" --system --ingroup lgsm lgsm && \
 	chown lgsm:lgsm /linuxgsm.sh && \
 	chmod +x /linuxgsm.sh && \
 	cp /linuxgsm.sh /home/lgsm/linuxgsm.sh && \
@@ -77,7 +77,7 @@ RUN chown -R lgsm:lgsm /gameserver
 
 USER lgsm
 WORKDIR /home/lgsm
-VOLUME [ "/home/lgsm" ]
+# VOLUME [ "/home/lgsm" ]
 
 # need use xterm for LinuxGSM
 ENV TERM=xterm
