@@ -12,15 +12,14 @@
 #     echo "Initializing Linuxgsm User Script in New Volume"
 #     cp /gameserver/linuxgsm.sh ./linuxgsm.sh
 # fi
-
-# if [ ! -e ~/gmodserver ]; then
-#     echo "Initializing Gameserver in New Volume"
-#     cp -R /gameserver/* ./
-# fi
+if [ ! -e ~/gmodserver ]; then
+    echo "Initializing Gameserver in New Volume"
+    mv /gameserver/* ./
+    symlinks -c ./
+fi
 # with no command, just spawn a running container suitable for exec's
 if [ $# = 0 ]; then
-    # bash ./gmodserver start && tail -f /dev/null &
-    child=$(pgrep -f "srcds_linux") 
+    # bash ./gmodserver start && tail -f /dev/null & 
     bash ./gmodserver start && tmux attach-session -t gmodserver
     
     

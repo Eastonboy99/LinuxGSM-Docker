@@ -19,13 +19,13 @@ Hostname='LGSM'
 DiscordNotifier="false"
 
 ## check if the container already running; return (true or '')
-status=$(sudo docker inspect --format="{{.State.Running}}" $InstanceName 2> /dev/null)
+status=$(docker inspect --format="{{.State.Running}}" $InstanceName 2> /dev/null)
 
 fn_discord_custom_sender(){
 	if [ "${DiscordNotifier}" == "true" ]
 	then
 		sleep 2
-		sudo docker exec ${InstanceName} alert_discord.sh "${cmd}"
+		docker exec ${InstanceName} alert_discord.sh "${cmd}"
 	fi
 }
 
@@ -35,12 +35,12 @@ fn_exec_cmd_sender(){
 	then
 		if [ "${2}" == "install" ]
 		then
-			sudo docker "${1}" ${InstanceName} bash /home/lgsm/linuxgsm.sh "${3}"
+			docker "${1}" ${InstanceName} bash /home/lgsm/linuxgsm.sh "${3}"
 		else
-			sudo docker "${1}" ${InstanceName} ${ServerType} "${2}" "${3}"
+			docker "${1}" ${InstanceName} ${ServerType} "${2}" "${3}"
 		fi
 	else
-		sudo docker "${1}" ${InstanceName}
+		docker "${1}" ${InstanceName}
 	fi
 }
 
@@ -53,7 +53,7 @@ fn_command_support(){
 		    	fn_exec_cmd_sender exec install "${3}"
 		    else
 		    	# Get List of game server name for install
-		    	sudo docker exec ${InstanceName} bash /home/lgsm/linuxgsm.sh install
+		    	docker exec ${InstanceName} bash /home/lgsm/linuxgsm.sh install
 			echo "enter the server name; ctrl+c to cancel"
 			read -a type
 			fn_exec_cmd_sender exec install "${type}"
@@ -70,7 +70,7 @@ fn_command_support(){
 		    then
 			fn_exec_cmd_sender exec stop
 			fn_discord_custom_sender "${cmd}"
-			sudo docker kill ${InstanceName}
+			docker kill ${InstanceName}
 		    fi
 		    ;;
 
@@ -122,7 +122,7 @@ fn_command_support(){
 
 		"command")
 		    ## Need to be test (take all parameter after the first one)
-		    sudo docker exec -it ${InstanceName} "${@:2}"
+		    docker exec -it ${InstanceName} "${@:2}"
 		    ;;
 
 		*)
@@ -137,8 +137,8 @@ fn_command_support(){
 if [ "${status}" != "true" ] && [ "$1" != "stop" ]
 then
 	echo "docker container was not running. start it for you."
-	sudo docker rm ${InstanceName} 2> /dev/null
-	sudo docker run --name ${InstanceName} --restart always --net=${Network} --hostname ${Hostname} -it -d -v "/home/lgsm/:/home/lgsm" ${Img} bash 2> /dev/null
+	docker rm ${InstanceName} 2> /dev/null
+	docker run --name ${InstanceName} --restart always --net=${Network} --hostname ${Hostname} -it -d -v "/home/lgsm/:/home/lgsm" ${Img} bash 2> /dev/null
 elif [ "${status}" == "true" ]
 then
 	echo "docker container already running, append command."
@@ -157,4 +157,4 @@ else
 	fn_command_support "${cmd}" "${2}"
 fi
 
-#sudo docker run --name arkserver --rm -it -d -v "/home/lgsm/:/home/lgsm" lgsm-docker bash $@
+#docker run --name arkserver --rm -it -d -v "/home/lgsm/:/home/lgsm" lgsm-docker bash $@
