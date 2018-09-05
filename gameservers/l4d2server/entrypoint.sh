@@ -16,24 +16,24 @@
 # wget -o /tmp/linuxgsm.sh https://raw.githubusercontent.com/GameServerManagers/LinuxGSM/master/linuxgsm.sh 
 
 # current_version=$(cat /tmp/linuxgsm.sh | grep "version=")
-# local_version=$(cat ./gmodserver | grep "version=")
+# local_version=$(cat ./l4d2server | grep "version=")
 # if [ current_version != local_version ]; then
 #     echo "please run \"docker pull {image_name}\" to get the latest version of this container"
 
-if [ ! -e ~/gmodserver ]; then
+if [ ! -e ~/l4d2server ]; then
     echo "Initializing Gameserver in New Volume"
     mv /gameserver/* ./
     symlinks -c ./
 fi
 # with no command, just spawn a running container suitable for exec's
 if [ $# = 0 ]; then
-    # bash ./gmodserver start && tail -f /dev/null & 
-    bash ./gmodserver start && tmux attach-session -t gmodserver
+    # bash ./l4d2server start && tail -f /dev/null & 
+    bash ./l4d2server start && tmux attach-session -t l4d2server
     
     
 else
     # execute the command passed through docker
-    ./gmodserver "$@"
+    ./l4d2server "$@"
 
     # if this command was a server start cmd
     # to get around LinuxGSM running everything in

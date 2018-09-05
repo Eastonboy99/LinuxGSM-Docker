@@ -13,10 +13,10 @@ USER lgsm
 WORKDIR /gameserver/
 
 ## download gmodserver file
-RUN bash ./linuxgsm.sh gmodserver
+RUN bash ./linuxgsm.sh l4d2server
 
 ## install the server to /gameserver
-RUN bash ./gmodserver auto-install
+RUN bash ./l4d2server auto-install
 
 ## needed for gmodserver
 EXPOSE 27015/udp
@@ -26,6 +26,8 @@ RUN chmod -R 775 /home/lgsm
 RUN chmod -R 775 /gameserver 
 
 WORKDIR /home/lgsm/
+
+
 
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["bash","/entrypoint.sh" ]
